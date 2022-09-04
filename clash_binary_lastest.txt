@@ -1,1 +1,1 @@
-clash-linux-armv8-2022.06.19
+clash-linux-armv8-2022.08.26
