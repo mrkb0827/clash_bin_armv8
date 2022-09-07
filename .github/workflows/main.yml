@@ -1,11 +1,6 @@
 name: Update Bin
 on: 
   workflow_dispatch:
-    inputs:
-      version:
-        description: 'version of Clash Premium'
-        required: true
-        type: string
 jobs:
   Update:
     runs-on: ubuntu-latest
