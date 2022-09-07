@@ -16,9 +16,11 @@ jobs:
         fi
         echo "Filename: $download_file_name"
         ver="${download_file_name%.*}"
-        mkdir -p /tmp/$ver
         cd /tmp
-        wget "https://github.com/Dreamacro/clash/releases/download/premium/$download_file_name" -O - | gzip -d > ./tmp/$ver/clash
+        mkdir -p $ver
+        ls
+        wget "https://github.com/Dreamacro/clash/releases/download/premium/$download_file_name" -O /tmp/$ver/clash.gz
+        gzip -d -f /tmp/$ver/clash.gz
         md5sum /tmp/$ver/clash > /tmp/$ver/md5sum.txt
         echo "$ver" > clash_binary_lastest.txt
         cp /tmp/* ./
