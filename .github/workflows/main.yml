@@ -18,8 +18,7 @@ jobs:
         ver="${download_file_name%.*}"
         mkdir -p /tmp/$ver
         cd /tmp
-        wget "https://github.com/Dreamacro/clash/releases/download/premium/$download_file_name" -O - | gzip -d 
-        mv /tmp/clash-linux-armv8 /tmp/$ver/clash
+        wget "https://github.com/Dreamacro/clash/releases/download/premium/$download_file_name" -O - | gzip -d > ./tmp/$ver/clash
         md5sum /tmp/$ver/clash > /tmp/$ver/md5sum.txt
         echo "$ver" > clash_binary_lastest.txt
         cp /tmp/* ./
