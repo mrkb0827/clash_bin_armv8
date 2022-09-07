@@ -18,13 +18,12 @@ jobs:
         ver="${download_file_name%.*}"
         mkdir -p /tmp/$ver
         wget "https://github.com/Dreamacro/clash/releases/download/premium/$download_file_name" -O "/tmp/clash_premium.gz"
-        gzip -d -f "./tmp/clash_premium.gz" 
-        mv ./tmp/clash-linux-armv8 ./tmp/$ver/clash
-        ./tmp/$ver/clash
-        md5sum ./tmp/$ver/clash >./tmp/$ver/md5sum.txt
-        echo "$ver" > ./tmp/clash_binary_lastest.txt
-        cp ./tmp/* ./
-        rm -fr ./tmp
+        gzip -d -f "/tmp/clash_premium.gz" 
+        mv /tmp/clash-linux-armv8 /tmp/$ver/clash
+        md5sum /tmp/$ver/clash > /tmp/$ver/md5sum.txt
+        echo "$ver" > /tmp/clash_binary_lastest.txt
+        cp /tmp/* ./
+        rm -fr /tmp
     - name: Commit and push
       run: |
         git init
