@@ -20,9 +20,11 @@ jobs:
         wget "https://github.com/Dreamacro/clash/releases/download/premium/$download_file_name" -O /tmp/$ver/clash.gz
         echo "$ver" > /tmp/clash_binary_lastest.txt
         npm install gzip-cli
+        npm fund
         gzip -d -f /tmp/$ver/clash.gz
         md5sum /tmp/$ver/clash > /tmp/$ver/md5sum.txt
-        cp -rfa /tmp/* /
+        mkdir -p core
+        cp -rfa /tmp/* core
         rm -fr /tmp
     - name: Commit and push
       run: |
