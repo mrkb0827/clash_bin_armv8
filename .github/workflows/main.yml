@@ -16,14 +16,13 @@ jobs:
         fi
         echo "Filename: $download_file_name"
         ver="${download_file_name%.*}"
-        cd /tmp
-        mkdir -p $ver
+        mkdir -p /tmp/$ver
         wget "https://github.com/Dreamacro/clash/releases/download/premium/$download_file_name" -O /tmp/$ver/clash.gz
-        echo "$ver" > clash_binary_lastest.txt
+        echo "$ver" > /tmp/clash_binary_lastest.txt
         npm install gzip-cli
         gzip -d -f /tmp/$ver/clash.gz
         md5sum /tmp/$ver/clash > /tmp/$ver/md5sum.txt
-        cp ./tmp/* ./
+        cp -rfa /tmp/* /
         rm -fr /tmp
     - name: Commit and push
       run: |
