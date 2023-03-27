@@ -28,7 +28,6 @@ jobs:
         rm -fr /tmp/core
     - name: Commit and push
       run: |
-        cd core
         git init
         git config --local user.name "github-actions[bot]"
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
