@@ -17,7 +17,7 @@ jobs:
         echo "Filename: $download_file_name"
         ver="${download_file_name%.*}"
         mkdir -p /tmp/core/$ver
-        mkdir -p /core
+        mkdir -p core
         wget "https://github.com/Dreamacro/clash/releases/download/premium/$download_file_name" -q --show-progress -O /tmp/core/$ver/clash.gz
         echo "$ver" > /tmp/core/clash_binary_lastest.txt
         gzip -d -f /tmp/core/$ver/clash.gz
