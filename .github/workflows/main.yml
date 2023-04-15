@@ -23,9 +23,10 @@ jobs:
         wget "https://github.com/Dreamacro/clash/releases/download/premium/$download_file_name" -q --show-progress -O /tmp/core/$ver/clash.gz
         echo "$ver" > /tmp/core/clash_binary_lastest.txt
         gzip -d -f /tmp/core/$ver/clash.gz
-        md5sum /tmp/core/$ver/clash |awk '{print $1}' | tr a-z A-Z > /tmp/core/$ver/md5sum.txt
+        md5sum /tmp/core/$ver/clash | awk '{print $1}' | tr a-z A-Z > /tmp/core/$ver/md5sum.txt
         cp -rfa /tmp/core/* core
         rm -fr /tmp/core
+        ls -t ./core/ | awk 'NR>3' | xargs -o rm -rf
         git init
         git config --local user.name "github-actions[bot]"
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
