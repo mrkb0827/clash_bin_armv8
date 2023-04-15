@@ -26,9 +26,9 @@ jobs:
         md5sum /tmp/core/$ver/clash | awk '{print $1}' | tr a-z A-Z > /tmp/core/$ver/md5sum.txt
         cp -rfa /tmp/core/* core
         rm -fr /tmp/core
-        ls -t ./core/ | awk 'NR>3' | xargs -o rm -rf
         git init
         git config --local user.name "github-actions[bot]"
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git add . && git commit -m "Update Core to ${ver}" || exit 0
         git push
+        ##git ls-files -z -t ./core/ | awk 'NR>3' | xargs -0 git rm -rf
