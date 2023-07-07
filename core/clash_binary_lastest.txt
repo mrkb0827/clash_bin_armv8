@@ -1,1 +1,1 @@
-clash-linux-arm64-2023.05.29
+clash-linux-arm64-2023.06.30
