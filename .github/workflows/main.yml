@@ -9,6 +9,10 @@ jobs:
     steps:
     - name: Clone Repository
       uses: actions/checkout@main
+    - name: Install UPX
+      uses: crazy-max/ghaction-upx@v3
+      with:
+        install-only: true
     - name: Download Core
       run: |
         download_file_name=$(wget -O - "https://api.github.com/repos/Dreamacro/clash/releases/tags/premium" 2> /dev/null | jq ".assets[].name" | grep -m 1 "linux-arm64" | xargs)
@@ -20,9 +24,11 @@ jobs:
         ver="${download_file_name%.*}"
         mkdir -p /tmp/core/$ver
         mkdir -p core
-        wget "https://github.com/Dreamacro/clash/releases/download/premium/$download_file_name" -q --show-progress -O /tmp/core/$ver/clash.gz
+        wget "https://github.com/Dreamacro/clash/releases/download/premium/$download_file_name" -q --show-progress -O /tmp/core/$ver/clashfull.gz
         echo "$ver" > /tmp/core/clash_binary_lastest.txt
-        gzip -d -f /tmp/core/$ver/clash.gz
+        gzip -d -f /tmp/core/$ver/clashfull.gz
+        upx -fq9 -o clash /tmp/core/$ver/clashfull
+        rm -f clashfull
         md5sum /tmp/core/$ver/clash |awk '{print $1}' | tr a-z A-Z > /tmp/core/$ver/md5sum.txt
         cp -rfa /tmp/core/* core
         rm -fr /tmp/core
