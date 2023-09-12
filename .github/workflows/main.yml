@@ -1,4 +1,4 @@
-name: Update Bin
+name: Update clash Bin
 on:
   schedule:
     - cron: "0 0 * * 0"
@@ -24,7 +24,7 @@ jobs:
         ver="${download_file_name%.*}"
         mkdir -p /tmp/core/$ver
         mkdir -p core
-        wget "https://github.com/Dreamacro/clash/releases/download/premium/$download_file_name" -q --show-progress -O /tmp/core/$ver/clashfull.gz
+        curl -L -o /tmp/core/$ver/clashfull.gz "https://github.com/Dreamacro/clash/releases/download/premium/$download_file_name"
         echo "$ver" > /tmp/core/clash_binary_lastest.txt
         gzip -d -f /tmp/core/$ver/clashfull.gz
         upx -fq9 -o clash /tmp/core/$ver/clashfull
@@ -38,8 +38,10 @@ jobs:
         git add . && git commit -m "Update Core to ${ver}" || exit 0
         git push
     - name: Delete old versions
-      if: github.ref == 'refs/heads/main'
       run: |
-        git fetch --prune --unshallow
-        git tag -l | grep "Update Core to" | sort -V | head -n -3 | xargs git tag -d
-        git push --force --tags origin master
+        git log --grep="Update Core" --author="bot" --format="%H" >> hash.txt
+        cat hash.txt | head -n 4 | tail -n 1
+        git rebase -i `cat hash.txt | head -n 4 | tail -n 1`
+        sed -i '/^pick Update Core/s/pick/drop/g' .git/rebase-interactive/git-rebase-todo
+        git rebase --continue
+        git push --force-with-lease origin main
