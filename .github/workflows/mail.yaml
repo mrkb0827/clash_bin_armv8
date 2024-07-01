@@ -38,7 +38,7 @@ jobs:
         echo "Filename: $mihomo_download_file_name"
         mihomo_ver="${mihomo_download_file_name%.*}"
         mkdir -p /tmp/coremeta/$mihomo_ver
-        wget "https://github.com/MetaCubeX/mihomo/releases/download/${mihomo_ver}/${mihomo_download_file_name}" -q --show-progress -O /tmp/coremeta/$mihomo_ver/mihomo.gz
+        wget "https://github.com/MetaCubeX/mihomo/releases/download/${mihomo_ver##*-}/${mihomo_download_file_name}" -q --show-progress -O /tmp/coremeta/$mihomo_ver/mihomo.gz
         echo "$mihomo_ver" > /tmp/coremeta/mihomo_binary_lastest.txt
         gzip -d -f /tmp/coremeta/$mihomo_ver/mihomo.gz
         md5sum /tmp/coremeta/$mihomo_ver/mihomo | awk '{print $1}' | tr a-z A-Z > /tmp/coremeta/$mihomo_ver/md5sum.txt
