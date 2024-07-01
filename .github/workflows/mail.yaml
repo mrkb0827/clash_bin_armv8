@@ -12,6 +12,7 @@ jobs:
       uses: actions/checkout@main
 
     - name: Download Clash Core
+      continue-on-error: true
       run: |
         clash_download_file_name=$(wget -O - "https://api.github.com/repos/Dreamacro/clash/releases/tags/premium" 2> /dev/null | jq -r ".assets[] | select(.name | test(\"linux-arm64\")) | .name" | grep -m 1 ".gz")
         if [[ -z "$clash_download_file_name" ]]; then
@@ -26,8 +27,8 @@ jobs:
         gzip -d -f /tmp/core/clash/$clash_ver/clash.gz
         md5sum /tmp/core/clash/$clash_ver/clash | awk '{print $1}' | tr a-z A-Z > /tmp/core/clash/$clash_ver/md5sum.txt
 
-
     - name: Download Mihomo Core
+      continue-on-error: true
       run: |
         mihomo_download_file_name=$(wget -O - "https://api.github.com/repos/MetaCubeX/mihomo/releases/latest" 2> /dev/null | jq -r ".assets[] | select(.name | test(\"linux-arm64\")) | .name" | grep -m 1 ".gz")
         if [[ -z "$mihomo_download_file_name" ]]; then
