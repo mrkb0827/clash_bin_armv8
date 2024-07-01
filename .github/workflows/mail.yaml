@@ -20,7 +20,7 @@ jobs:
           exit 1
         fi
         echo "Filename: $clash_download_file_name"
-        clash_ver="${clash_download_file_name%.*.*}"
+        clash_ver="${clash_download_file_name%.*}"
         mkdir -p /tmp/core/$clash_ver
         wget "https://github.com/Dreamacro/clash/releases/download/premium/${clash_download_file_name}" -q --show-progress -O /tmp/core/$clash_ver/clash.gz
         echo "$clash_ver" > /tmp/core/clash_binary_lastest.txt
@@ -36,7 +36,7 @@ jobs:
           exit 1
         fi
         echo "Filename: $mihomo_download_file_name"
-        mihomo_ver="${mihomo_download_file_name%.*.*}"
+        mihomo_ver="${mihomo_download_file_name%.*}"
         mkdir -p /tmp/coremeta/$mihomo_ver
         wget "https://github.com/MetaCubeX/mihomo/releases/download/${mihomo_ver}/${mihomo_download_file_name}" -q --show-progress -O /tmp/coremeta/$mihomo_ver/mihomo.gz
         echo "$mihomo_ver" > /tmp/coremeta/mihomo_binary_lastest.txt
