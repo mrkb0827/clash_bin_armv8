@@ -10,8 +10,13 @@ jobs:
     steps:
     - name: Clone Repository
       uses: actions/checkout@main
+      
+    - name: Install UPX
+      uses: crazy-max/ghaction-upx@v3
+      with:
+        install-only: true
 
-    - name: Download Clash Core
+    - name: Clash Core
       continue-on-error: true
       run: |
         clash_download_file_name=$(wget -O - "https://api.github.com/repos/Dreamacro/clash/releases/tags/premium" 2> /dev/null | jq -r ".assets[] | select(.name | test(\"linux-arm64\")) | .name" | grep -m 1 ".gz")
@@ -25,9 +30,11 @@ jobs:
         wget "https://github.com/Dreamacro/clash/releases/download/premium/${clash_download_file_name}" -q --show-progress -O /tmp/core/$clash_ver/clash.gz
         echo "$clash_ver" > /tmp/core/clash_binary_lastest.txt
         gzip -d -f /tmp/core/$clash_ver/clash.gz
+        upx --best /tmp/core/$clash_ver/clash -o /tmp/core/$clash_ver/clash_upx
         md5sum /tmp/core/$clash_ver/clash | awk '{print $1}' | tr a-z A-Z > /tmp/core/$clash_ver/md5sum.txt
+        md5sum /tmp/core/$clash_ver/clash_upx | awk '{print $1}' | tr a-z A-Z > /tmp/core/$clash_ver/md5sum_upx.txt
 
-    - name: Download Mihomo Core
+    - name: Mihomo Core
       continue-on-error: true
       run: |
         mihomo_download_file_name=$(wget -O - "https://api.github.com/repos/MetaCubeX/mihomo/releases/latest" 2> /dev/null | jq -r ".assets[] | select(.name | test(\"linux-arm64\")) | .name" | grep -m 1 ".gz")
@@ -41,8 +48,9 @@ jobs:
         wget "https://github.com/MetaCubeX/mihomo/releases/download/${mihomo_ver##*-}/${mihomo_download_file_name}" -q --show-progress -O /tmp/coremeta/$mihomo_ver/mihomo.gz
         echo "$mihomo_ver" > /tmp/coremeta/mihomo_binary_lastest.txt
         gzip -d -f /tmp/coremeta/$mihomo_ver/mihomo.gz
+        upx --best /tmp/coremeta/$mihomo_ver/mihomo -o /tmp/coremeta/$mihomo_ver/mihomo_upx
         md5sum /tmp/coremeta/$mihomo_ver/mihomo | awk '{print $1}' | tr a-z A-Z > /tmp/coremeta/$mihomo_ver/md5sum.txt
-
+        md5sum /tmp/coremeta/$mihomo_ver/mihomo_upx | awk '{print $1}' | tr a-z A-Z > /tmp/coremeta/$mihomo_ver/md5sum_upx.txt
     - name: Copy Files to Core and Coremeta
       run: |
         mkdir -p core
