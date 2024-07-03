@@ -62,8 +62,16 @@ jobs:
       run: |
         mkdir -p core
         mkdir -p coremeta
-        cp -rfa /tmp/core/* core
-        cp -rfa /tmp/coremeta/* coremeta
+        if [ "$(ls -A /tmp/core)" ]; then
+          cp -rfa /tmp/core/* core
+        else
+          echo "The /tmp/core/ directory is empty."
+        fi
+        if [ "$(ls -A /tmp/coremeta)" ]; then
+          cp -rfa /tmp/coremeta/* coremeta
+        else
+          echo "The /tmp/coremeta/ directory is empty."
+        fi
         rm -fr /tmp/core
         rm -fr /tmp/coremeta
 
