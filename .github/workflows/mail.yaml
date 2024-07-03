@@ -69,6 +69,16 @@ jobs:
         fi
         rm -fr /tmp/core
         rm -fr /tmp/coremeta
+        
+    - name: Prune Old Versions in Core
+      run: |
+        cd core
+        ls -dt */ | tail -n +4 | xargs rm -rf
+
+    - name: Prune Old Versions in Coremeta
+      run: |
+        cd coremeta
+        ls -dt */ | tail -n +4 | xargs rm -rf
 
     - name: Commit and Push
       run: |
