@@ -18,6 +18,7 @@ jobs:
 
     - name: Clash Core
       continue-on-error: true
+      id: clash_download
       run: |
         clash_download_file_name=$(wget -O - "https://api.github.com/repos/Dreamacro/clash/releases/tags/premium" 2> /dev/null | jq -r ".assets[] | select(.name | test(\"linux-arm64\")) | .name" | grep -m 1 ".gz")
         if [[ -z "$clash_download_file_name" ]]; then
@@ -34,10 +35,11 @@ jobs:
         upx --best /tmp/core/$clash_ver/clash -o /tmp/core/$clash_ver/clash_upx
         md5sum /tmp/core/$clash_ver/clash | awk '{print $1}' | tr a-z A-Z > /tmp/core/$clash_ver/md5sum.txt
         md5sum /tmp/core/$clash_ver/clash_upx | awk '{print $1}' | tr a-z A-Z > /tmp/core/$clash_ver/md5sum_upx.txt
-        echo "::set-output name=clash_version::$clash_ver"
+        echo "clash_version=$clash_ver" >> $GITHUB_ENV
 
     - name: Mihomo Core
       continue-on-error: true
+      id: mihomo_download
       run: |
         mihomo_download_file_name=$(wget -O - "https://api.github.com/repos/MetaCubeX/mihomo/releases/latest" 2> /dev/null | jq -r ".assets[] | select(.name | test(\"linux-arm64\")) | .name" | grep -m 1 ".gz")
         if [[ -z "$mihomo_download_file_name" ]]; then
@@ -54,7 +56,7 @@ jobs:
         upx --best /tmp/coremeta/$mihomo_ver/mihomo -o /tmp/coremeta/$mihomo_ver/mihomo_upx
         md5sum /tmp/coremeta/$mihomo_ver/mihomo | awk '{print $1}' | tr a-z A-Z > /tmp/coremeta/$mihomo_ver/md5sum.txt
         md5sum /tmp/coremeta/$mihomo_ver/mihomo_upx | awk '{print $1}' | tr a-z A-Z > /tmp/coremeta/$mihomo_ver/md5sum_upx.txt
-        echo "::set-output name=mihomo_version::$mihomo_ver"
+        echo "mihomo_version=$mihomo_ver" >> $GITHUB_ENV
      
     - name: Copy Files to Core and Coremeta
       run: |
@@ -78,5 +80,5 @@ jobs:
         git init
         git config --local user.name "github-actions[bot]"
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
-        git add . && git commit -m "Update Clash Core to ${{ steps.clash_download.outputs.clash_version }} and Mihomo Core to ${{ steps.mihomo_download.outputs.mihomo_version }}" || exit 0
+        git add . && git commit -m "Update Clash Core to ${{ env.clash_version }} and Mihomo Core to ${{ env.mihomo_version }}" || exit 0
         git push
