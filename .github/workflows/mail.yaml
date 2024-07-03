@@ -30,6 +30,7 @@ jobs:
         wget "https://github.com/Dreamacro/clash/releases/download/premium/${clash_download_file_name}" -q --show-progress -O /tmp/core/$clash_ver/clash.gz
         echo "$clash_ver" > /tmp/core/clash_binary_lastest.txt
         gzip -d -f /tmp/core/$clash_ver/clash.gz
+        chmod +x /tmp/core/$clash_ver/clash
         upx --best /tmp/core/$clash_ver/clash -o /tmp/core/$clash_ver/clash_upx
         md5sum /tmp/core/$clash_ver/clash | awk '{print $1}' | tr a-z A-Z > /tmp/core/$clash_ver/md5sum.txt
         md5sum /tmp/core/$clash_ver/clash_upx | awk '{print $1}' | tr a-z A-Z > /tmp/core/$clash_ver/md5sum_upx.txt
@@ -48,6 +49,7 @@ jobs:
         wget "https://github.com/MetaCubeX/mihomo/releases/download/${mihomo_ver##*-}/${mihomo_download_file_name}" -q --show-progress -O /tmp/coremeta/$mihomo_ver/mihomo.gz
         echo "$mihomo_ver" > /tmp/coremeta/mihomo_binary_lastest.txt
         gzip -d -f /tmp/coremeta/$mihomo_ver/mihomo.gz
+        chmod +x /tmp/coremeta/$mihomo_ver/mihomo
         upx --best /tmp/coremeta/$mihomo_ver/mihomo -o /tmp/coremeta/$mihomo_ver/mihomo_upx
         md5sum /tmp/coremeta/$mihomo_ver/mihomo | awk '{print $1}' | tr a-z A-Z > /tmp/coremeta/$mihomo_ver/md5sum.txt
         md5sum /tmp/coremeta/$mihomo_ver/mihomo_upx | awk '{print $1}' | tr a-z A-Z > /tmp/coremeta/$mihomo_ver/md5sum_upx.txt
