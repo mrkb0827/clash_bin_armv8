@@ -57,28 +57,30 @@ jobs:
         md5sum /tmp/coremeta/$mihomo_ver/mihomo | awk '{print $1}' | tr a-z A-Z > /tmp/coremeta/$mihomo_ver/md5sum.txt
         md5sum /tmp/coremeta/$mihomo_ver/mihomo_upx | awk '{print $1}' | tr a-z A-Z > /tmp/coremeta/$mihomo_ver/md5sum_upx.txt
         echo "mihomo_version=$mihomo_ver" >> $GITHUB_ENV
-     
+
     - name: Copy Files to Core and Coremeta
       run: |
         mkdir -p core
         mkdir -p coremeta
-        if [ "$(ls -A /tmp/core)" ]; then
-          cp -rfa /tmp/core/* core
-        else
-          echo "The /tmp/core/ directory is empty."
-        fi
-        if [ "$(ls -A /tmp/coremeta)" ]; then
-          cp -rfa /tmp/coremeta/* coremeta
-        else
-          echo "The /tmp/coremeta/ directory is empty."
-        fi
+        cp -rfa /tmp/core/* core
+        cp -rfa /tmp/coremeta/* coremeta
         rm -fr /tmp/core
         rm -fr /tmp/coremeta
-        
+
+    - name: Prune Old Versions in Core and Coremeta
+      run: |
+        cd core
+        ls -dt */ | tail -n +4 | xargs rm -rf
+        cd ..
+
+        cd coremeta
+        ls -dt */ | tail -n +4 | xargs rm -rf
+        cd ..
+
     - name: Commit and Push
       run: |
-        git init
         git config --local user.name "github-actions[bot]"
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
-        git add . && git commit -m "Update Clash Core to ${{ env.clash_version }} and Mihomo Core to ${{ env.mihomo_version }}" || exit 0
+        git add .
+        git commit -m "Update Clash Core to ${{ env.clash_version }} and Mihomo Core to ${{ env.mihomo_version }}"
         git push
