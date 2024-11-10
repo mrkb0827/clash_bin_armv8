@@ -1,1 +1,1 @@
-mihomo-linux-arm64-v1.18.9
+mihomo-linux-arm64-v1.18.10
